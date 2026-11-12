@@ -1,0 +1,618 @@
+
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Undangan Pernikahan</title>
+
+    <style>
+
+        /* PENGATURAN DASAR */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body.website {
+            font-family: Arial, sans-serif;
+            background-image: url("images/6.jpeg");
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* SETIAP SECTION */
+        .halaman {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100svh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 80px 20px;
+    text-align: center;
+    overflow: hidden;
+
+    scroll-snap-align: start;
+    isolation: isolate;
+}
+        /* VIDEO BACKGROUND */
+        .video-latar {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+    object-position: center;
+
+    background: #000;
+    z-index: -2;
+}
+        /* LAPISAN GELAP */
+        .lapisan {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: -1;
+        }
+
+        /* KONTEN SECTION */
+        .konten {
+            color: white;
+            padding: 25px;
+            max-width: 600px;
+        }
+
+        .konten h1 {
+            font-size: 35px;
+            margin-bottom: 15px;
+        }
+
+        .konten p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        /* TOMBOL BUKA UNDANGAN */
+.btn-buka {
+    position: absolute;
+    bottom: 6%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    padding: 10px 25px;
+
+    background: rgba(192, 57, 43, 0.65);
+    color: white;
+
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 12px;
+
+    font-size: 13px;
+    cursor: pointer;
+
+    z-index: 5;
+}
+   /* KOTAK RSVP */
+/* KOTAK RSVP */
+.rsvp-card {
+    width: 100%;
+    max-width: 350px;
+    box-sizing: border-box;
+    padding: 15px;
+    margin: 200px auto 0;
+
+    background: rgba(192, 57, 43, 0.65) !important;
+    border-radius: 12px;
+    color: white;
+}
+/* JUDUL */
+.rsvp-card h1 {
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* TANGGAL DAN WAKTU */
+.rsvp-card p {
+    font-size: 11px;
+    margin: 4px 0;
+    line-height: 1.4;
+}
+
+/* TOMBOL KEHADIRAN */
+.pilihan-kehadiran {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.pilihan-kehadiran button {
+    flex: 1;
+    padding: 13px 6px;
+    margin: 0;
+    font-size: 13px;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+/* FORM RSVP */
+#form-rsvp h3 {
+    font-size: 15px;
+}
+
+#form-rsvp input,
+#form-rsvp textarea {
+    width: 100%;
+    padding: 9px;
+    margin-bottom: 9px;
+    box-sizing: border-box;
+    border-radius: 7px;
+    border: none;
+    font-size: 12px;
+}
+
+#form-rsvp button {
+    font-size: 12px;
+    padding: 9px 18px;
+    margin: 0;
+}
+
+/* DINDING TAMU */
+.dinding-tamu {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.dinding-tamu h3 {
+    font-size: 14px;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+/* PESAN TAMU */
+.kartu-tamu {
+    background: rgba(255,255,255,0.15);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 11px;
+    overflow-wrap: anywhere;
+}
+
+.kartu-tamu h4 {
+    font-size: 12px;
+    margin: 0 0 5px;
+}
+
+.kartu-tamu p {
+    font-size: 11px;
+}
+
+/* AREA DAFTAR TAMU */
+#daftar-tamu {
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 5px;
+}
+
+/* SCROLLBAR */
+#daftar-tamu::-webkit-scrollbar {
+    width: 5px;
+}
+
+#daftar-tamu::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.5);
+    border-radius: 10px;
+}
+/* SEBELUM UNDANGAN DIBUKA */
+body.website:not(.undangan-dibuka) {
+    overflow: hidden;
+}
+
+/* SEMBUNYIKAN SECTION SELAIN COVER */
+body.website:not(.undangan-dibuka) .halaman:not(#cover) {
+    display: none;
+}
+
+/* SETELAH UNDANGAN DIBUKA */
+body.website.undangan-dibuka {
+    overflow-y: auto;
+}
+
+/* SEMBUNYIKAN COVER SETELAH DIBUKA */
+body.website.undangan-dibuka #cover {
+    display: none;
+}
+
+#tombol-musik {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+
+    background: rgba(192, 57, 43, 0.75);
+    color: white;
+
+    border: 1px solid white;
+    border-radius: 20px;
+
+    padding: 10px 15px;
+    font-size: 12px;
+
+    cursor: pointer;
+
+    display: none;
+}
+.pemutar-musik {
+    display: flex;
+    justify-content: center;
+    margin-top: 800px;
+    margin-bottom: 10px;
+}
+
+.pemutar-musik audio {
+    width: 200px;
+    height: 40px;
+}
+/* COUNTDOWN */
+.countdown {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    top: 35%;
+    left: 40%;
+    transform: translateX(-50%);
+
+    width: max-content;
+    color: #781d29;
+    font-family: inherit;
+}
+
+.countdown-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.countdown-item span {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.countdown-item small {
+    font-size: 10px;
+    margin-top: 2px;
+}
+</style>
+</head>
+
+<body class="website">
+
+    <!-- SECTION 1: COVER -->
+    <section class="halaman" id="cover">
+
+        <video class="video-latar" autoplay muted loop playsinline>
+            <source src="video/9.mp4" type="video/mp4">
+        </video>
+
+        <div class="lapisan"></div>
+
+       <button class="btn-buka" onclick="bukaUndangan()">
+        Buka Undangan
+</button>
+
+    </section>
+
+     <section class="halaman" id="opening">
+
+        <video class="video-latar" autoplay muted loop playsinline>
+            <source src="video/10.mp4" type="video/mp4">
+        </video>
+
+        <div class="lapisan"></div>
+
+       <div class="pemutar-musik">
+    <audio controls loop>
+        <source src="audio/1.mp3" type="audio/mpeg">
+        Browser kamu tidak mendukung pemutar musik.
+    </audio>
+</div>
+
+    </section>
+
+
+    <!-- SECTION 2: OPENING -->
+    <section class="halaman" id="opening">
+
+        <video class="video-latar" autoplay muted loop playsinline>
+            <source src="video/13.mp4" type="video/mp4">
+        </video>
+
+        <div class="lapisan"></div>
+    </section>
+
+
+    <!-- SECTION 3: NAMA PENGANTIN -->
+    <section class="halaman" id="pengantin">
+
+        <video class="video-latar" autoplay muted loop playsinline>
+            <source src="video/11.mp4" type="video/mp4">
+        </video>
+
+        <div class="lapisan"></div>
+
+        <button class="btn-buka" onclick="bukaLokasi()">
+    Lokasi
+</button>
+
+    </section>
+
+
+    <!-- SECTION 4: INFORMASI ACARA -->
+    <section class="halaman" id="acara">
+
+        <video class="video-latar" autoplay muted loop playsinline>
+            <source src="video/4.mp4" type="video/mp4">
+        </video>
+
+        <div class="lapisan"></div>
+
+        <div class="konten">
+
+    <div class="rsvp-card">
+
+        <h1>Wedding Wish Uyu & Bbe</h1>
+
+        <p>Minggu, 06 Desember</p>
+        <p>08.00 WIB</p>
+
+        <!-- PILIH KEHADIRAN -->
+        <div class="pilihan-kehadiran">
+
+            <button type="button" onclick="pilihKehadiran('Hadir')">
+                ✓
+                <span>Hadir</span>
+            </button>
+
+            <button type="button" onclick="pilihKehadiran('Tidak Hadir')">
+                ✕
+                <span>Tidak Hadir</span>
+            </button>
+
+        </div>
+
+        <!-- FORM RSVP -->
+        <form id="form-rsvp" style="display: none;">
+
+            <h3>Konfirmasi Kehadiran</h3>
+
+            <input type="text" id="nama" placeholder="Nama kamu" required>
+
+            <textarea id="pesan" placeholder="Tulis pesan dan doa..." required></textarea>
+
+            <button type="submit">Kirim</button>
+
+        </form>
+
+        <!-- DINDING TAMU -->
+        <div class="dinding-tamu">
+
+            <h3>Dinding Tamu</h3>
+
+            <div id="daftar-tamu"></div>
+
+        </div>
+
+    </div>
+
+</div>
+    </section>
+
+
+    <!-- SECTION 5: RSVP -->
+    <section class="halaman" id="rsvp">
+
+        <video class="video-latar" autoplay muted loop playsinline>
+            <source src="video/12.mp4" type="video/mp4">
+        </video>
+
+        <div class="lapisan"></div>
+        <!-- COUNTDOWN -->
+<div class="countdown">
+    <div class="countdown-item">
+        <span id="hari">00</span>
+        <small>Hari</small>
+    </div>
+
+    <div class="countdown-item">
+        <span id="jam">00</span>
+        <small>Jam</small>
+    </div>
+
+    <div class="countdown-item">
+        <span id="menit">00</span>
+        <small>Menit</small>
+    </div>
+
+    <div class="countdown-item">
+        <span id="detik">00</span>
+        <small>Detik</small>
+    </div>
+</div>
+
+    </section>
+<script>
+
+// AMBIL DATA YANG TERSIMPAN
+let dataTamu = JSON.parse(localStorage.getItem("dataTamu")) || [];
+
+let statusKehadiran = "";
+
+const form = document.getElementById("form-rsvp");
+const daftar = document.getElementById("daftar-tamu");
+
+// PILIH KEHADIRAN
+function pilihKehadiran(status) {
+
+    statusKehadiran = status;
+
+    form.style.display = "block";
+
+}
+
+// TAMPILKAN DAFTAR TAMU
+function tampilkanTamu() {
+
+    daftar.innerHTML = "";
+
+    dataTamu.forEach(function(tamu) {
+
+        const kartu = document.createElement("div");
+        kartu.className = "kartu-tamu";
+
+        const nama = document.createElement("h4");
+        nama.textContent = tamu.nama;
+
+        const status = document.createElement("p");
+        status.textContent = tamu.status;
+
+        const pesan = document.createElement("p");
+        pesan.textContent = tamu.pesan;
+
+        kartu.appendChild(nama);
+        kartu.appendChild(status);
+        kartu.appendChild(pesan);
+
+        daftar.appendChild(kartu);
+
+    });
+
+}
+
+// KIRIM RSVP
+form.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const nama = document.getElementById("nama").value;
+    const pesan = document.getElementById("pesan").value;
+
+    const tamuBaru = {
+        nama: nama,
+        status: statusKehadiran,
+        pesan: pesan
+    };
+
+    // SIMPAN DATA
+    dataTamu.unshift(tamuBaru);
+
+    localStorage.setItem("dataTamu", JSON.stringify(dataTamu));
+
+    // TAMPILKAN DATA
+    tampilkanTamu();
+
+    // KOSONGKAN FORM
+    form.reset();
+
+    form.style.display = "none";
+
+    alert("Terima kasih sudah mengisi buku tamu!");
+
+});
+
+// TAMPILKAN DATA SAAT HALAMAN DIBUKA
+tampilkanTamu();
+
+// MEMBUKA UNDANGAN
+function bukaUndangan() {
+
+    document.body.classList.add("undangan-dibuka");
+
+    window.scrollTo(0, 0);
+    document.getElementById("tombol-musik").style.display = "block";
+
+    const musik = document.getElementById("musik-undangan");
+
+    musik.play();
+
+}
+
+// MEMBUKA GOOGLE MAPS
+function bukaLokasi() {
+
+    const alamat = "Kp Leuwi panjang, RT.16/RW.05, Desa Buniwangi, Kecamatan Gegerbitug, Kabupaten Sukabumi, Jawa Barat";
+
+    const linkMaps = "https://www.google.com/maps/search/?api=1&query="
+                     + encodeURIComponent(alamat);
+
+    window.open(linkMaps, "_blank");
+
+}
+function toggleMusik() {
+
+    const musik = document.getElementById("musik-undangan");
+    const tombol = document.getElementById("tombol-musik");
+
+    if (musik.paused) {
+
+        musik.play();
+        tombol.innerHTML = "🎵 Musik ON";
+
+    } else {
+
+        musik.pause();
+        tombol.innerHTML = "🔇 Musik OFF";
+
+    }
+
+}
+function hitungMundur() {
+    const tanggalNikah = new Date(2026, 11, 6, 0, 0, 0).getTime();
+
+    const sekarang = new Date().getTime();
+    const selisih = tanggalNikah - sekarang;
+
+    if (selisih <= 0) {
+        document.getElementById("hari").innerText = "00";
+        document.getElementById("jam").innerText = "00";
+        document.getElementById("menit").innerText = "00";
+        document.getElementById("detik").innerText = "00";
+        return;
+    }
+
+    const hari = Math.floor(selisih / (1000 * 60 * 60 * 24));
+    const jam = Math.floor((selisih / (1000 * 60 * 60)) % 24);
+    const menit = Math.floor((selisih / (1000 * 60)) % 60);
+    const detik = Math.floor((selisih / 1000) % 60);
+
+    document.getElementById("hari").innerText = hari;
+    document.getElementById("jam").innerText = jam;
+    document.getElementById("menit").innerText = menit;
+    document.getElementById("detik").innerText = detik;
+}
+
+hitungMundur();
+setInterval(hitungMundur, 1000);
+</script>
+
+</body>
+</html>
