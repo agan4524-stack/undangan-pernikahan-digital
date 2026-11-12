@@ -259,17 +259,6 @@ body.website.undangan-dibuka #cover {
 
     display: none;
 }
-.pemutar-musik {
-    display: flex;
-    justify-content: center;
-    margin-top: 800px;
-    margin-bottom: 10px;
-}
-
-.pemutar-musik audio {
-    width: 200px;
-    height: 40px;
-}
 /* COUNTDOWN */
 .countdown {
     display: flex;
@@ -330,12 +319,13 @@ body.website.undangan-dibuka #cover {
 
         <div class="lapisan"></div>
 
-       <div class="pemutar-musik">
-    <audio controls loop>
+       <audio id="musik-undangan" loop>
         <source src="audio/1.mp3" type="audio/mpeg">
         Browser kamu tidak mendukung pemutar musik.
     </audio>
-</div>
+    <button id="tombol-musik" type="button" onclick="toggleMusik()">
+        🎵 Musik ON
+    </button>
 
     </section>
 
